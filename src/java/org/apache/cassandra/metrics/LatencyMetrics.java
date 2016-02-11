@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.codahale.metrics.Counter;
+import com.codahale.metrics.SlidingTimeWindowReservoir;
 import com.codahale.metrics.Timer;
 
 import com.google.common.collect.ImmutableList;
@@ -79,7 +80,9 @@ public class LatencyMetrics
         this.factory = factory;
         this.namePrefix = namePrefix;
 
-        latency = Metrics.timer(factory.createMetricName(namePrefix + "Latency"));
+        //latency = Metrics.timer(factory.createMetricName(namePrefix + "Latency"));
+        latency = Metrics.register(factory.createMetricName(namePrefix + "Latency"),
+                         new Timer(new SlidingTimeWindowReservoir(1, TimeUnit.MINUTES)));
         totalLatency = Metrics.counter(factory.createMetricName(namePrefix + "TotalLatency"));
     }
     
