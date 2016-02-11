@@ -604,6 +604,7 @@ public class StorageProxy implements StorageProxyMBean
                 {
                     writeMetrics.timeouts.mark();
                     WriteTimeoutException te = (WriteTimeoutException)ex;
+                    logger.warn("Write timeout; received {} of {} required replies", te.received, te.blockFor);
                     Tracing.trace("Write timeout; received {} of {} required replies", te.received, te.blockFor);
                 }
                 throw ex;
