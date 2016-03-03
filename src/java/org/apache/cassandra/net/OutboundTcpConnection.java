@@ -540,7 +540,7 @@ public class OutboundTcpConnection extends Thread
             QueuedMessage qm = iter.next();
             if (!qm.droppable)
                 continue;
-            if (qm.timestampNanos >= System.nanoTime() - qm.message.getTimeout())
+            if (qm.timestampNanos >= System.nanoTime() - TimeUnit.MILLISECONDS.toNanos(qm.message.getTimeout()))
                 return;
             iter.remove();
             dropped.incrementAndGet();
